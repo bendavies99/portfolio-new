@@ -30,7 +30,7 @@ import HomepageSection from "../features/HomepageSection.vue";
             <p class="text-orange-500"> > Establishing Secure connection...</p>
             <p class="text-orange-500"> > Booting Contact Section...</p>
             <p class="text-primary inline-flex items-center gap-2">
-              <Lock :size="15"/>
+              <Lock :size="15" class="shrink-0"/>
               Secure connection established, and contact section booted...
             </p>
           </div>

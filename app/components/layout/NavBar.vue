@@ -43,7 +43,7 @@ const goto = (link: string, target: string | undefined = undefined) => {
 </script>
 
 <template>
-  <div class="transition-all duration-500 fixed inset-0 bg-neutral-900 font-mono w-full flex flex-col isolate" :class="{'opacity-0': !showMobileNav || closing, 'opacity-100 z-200': showMobileNav && !closing, 'z-200': closing}">
+  <div class="lg:hidden transition-all duration-500 fixed inset-0 bg-neutral-900 font-mono w-full flex flex-col isolate" :class="{'-z-10 opacity-0': !showMobileNav || closing, 'opacity-100 z-200': showMobileNav && !closing, 'z-200!': closing}">
     <div class="flex border-b border-neutral-800 w-full px-2 h-16 justify-between">
       <a @click.prevent="goto('/')" class="h-full flex items-center gap-2 md:gap-4 flex-1">
         <TerminalSquare class=""/>

@@ -51,7 +51,7 @@ useHead({
       </div>
     </header>
     <main class="max-w-7xl w-full mx-auto px-4 lg:px-0 -mt-72 z-40 flex flex-col gap-12 flex-1">
-      <div class="w-full lg:max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="w-full lg:max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-5">
         <div
             class="bg-neutral-950 rounded-xl border border-neutral-700 shadow-xl relative overflow-hidden group flex flex-col">
 
@@ -71,7 +71,7 @@ useHead({
               <p class="text-orange-500"> > Establishing Secure connection...</p>
               <p class="text-orange-500"> > Booting Contact Section...</p>
               <p class="text-primary inline-flex items-center gap-2">
-                <Lock :size="15"/>
+                <Lock :size="15" class="shrink-0"/>
                 Secure connection established, and contact section booted...
               </p>
             </div>
