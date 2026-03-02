@@ -7,6 +7,9 @@ useHead({
   titleTemplate: (titleChunk) => {
     return titleChunk ? `${titleChunk} - Ben Davies Portfolio` : 'Ben Davies Portfolio'
   },
+  meta: [
+      { name: 'darkreader-lock', content: 'true' }
+  ]
 })
 
 </script>
