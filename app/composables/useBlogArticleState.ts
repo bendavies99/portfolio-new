@@ -1,0 +1,1 @@
+export const useBlogArticleState = () => useState<BlogArticleMeta>('current-article');
