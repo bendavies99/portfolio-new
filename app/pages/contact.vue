@@ -1,65 +1,12 @@
 <script lang="ts" setup>
-import {useBlogArticles} from "#imports";
-import {Search, LoaderCircle, CodeXml, ScrollTextIcon} from "lucide-vue-next";
-import {InputGroup, InputGroupAddon, InputGroupInput} from "../../components/ui/input-group";
-import {
-  Select,
-  SelectItem,
-  SelectGroup,
-  SelectLabel,
-  SelectContent,
-  SelectTrigger,
-  SelectValue
-} from "../../components/ui/select";
-import {
-  Pagination,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationNext,
-  PaginationPrevious,
-} from '@/components/ui/pagination'
-
-const _blogs = useBlogArticles();
-const blogs = [..._blogs].map((b, idx) => ({...b, title: b.title + ' - ' + idx}));
-const filteredBlogs = ref<ReturnType<typeof useBlogArticles>>(blogs);
-const search = ref('');
-const limit = ref(10);
-const page = ref(1);
-const category = ref([]);
-const tag = ref([]);
-
-const categories = computed(() => {
-  return new Set(blogs.map(i => i.category));
-});
-
-const tags = computed(() => {
-  return new Set(blogs.flatMap(i => i.tags.map(t => `${t.toLowerCase()}`)));
-});
-
-const offset = computed(() => {
-  return (page.value - 1) * limit.value;
-})
-
-const paginatedBlogs = computed(() => {
-  return filteredBlogs.value.slice(offset.value, offset.value + limit.value);
-});
-
-const getIcon = (category: string) => {
-  switch (category) {
-    case 'Development':
-      return CodeXml
-    default:
-      return ScrollTextIcon
-  }
-}
+import {MailIcon, Lock} from "lucide-vue-next";
 
 definePageMeta({
   layout: 'default'
 });
 
 useSeoMeta({
-  title: "Blog",
+  title: "Blog | Ben Davies Portfolio",
   description: "ls -al ./blog",
   ogTitle: "Blog",
   ogDescription: "ls -al ./blog",
@@ -84,35 +31,6 @@ useHead({
   ]
 });
 
-const filterBlogs = () => {
-  let finalBlogs = blogs;
-  if (search.value !== '') {
-    finalBlogs = finalBlogs.filter(b => b.title.toLowerCase().includes(search.value.toLowerCase()))
-  }
-
-  if (tag.value.length >= 1 && !(tag.value.length === 1 && tag.value[0]!.toLowerCase() === 'all')) {
-    finalBlogs = finalBlogs.filter(b => !!b.tags.find(t => tag.value.find(_t => _t.toLowerCase() === t.toLowerCase())));
-  }
-
-  if (category.value.length >= 1 && !(category.value.length === 1 && category.value[0]!.toLowerCase() === 'all')) {
-    finalBlogs = finalBlogs.filter(b => category.value.find(c => c.toLowerCase() === b.category.toLowerCase()));
-  }
-
-  filteredBlogs.value = finalBlogs;
-}
-
-watch(search, () => {
-  filterBlogs();
-}, {immediate: true});
-
-watch(category, () => {
-  filterBlogs();
-}, {immediate: true});
-
-watch(tag, () => {
-  filterBlogs();
-}, {immediate: true});
-
 </script>
 
 <template>
@@ -125,162 +43,63 @@ watch(tag, () => {
           <p class="text-white"><span class="text-primary">ben</span>@<span class="text-blue-500">portfolio</span></p>
           <span>:</span>
           <span>~$</span>
-          <span class="text-white ">ls -al ./</span>
+          <span class="text-white ">java -jar ./</span>
         </div>
         <h1 class="text-4xl sm:text-6xl font-bold text-white font-sans tracking-tight leading-tight">
-          Blog
+          Contact
         </h1>
       </div>
     </header>
     <main class="max-w-7xl w-full mx-auto px-4 lg:px-0 -mt-72 z-40 flex flex-col gap-12 flex-1">
-      <div class="flex justify-between flex-col gap-2 md:flex-row">
-        <div>
-          <InputGroup>
-            <InputGroupInput v-model="search" placeholder="Search..."/>
-            <InputGroupAddon>
-              <Search/>
-            </InputGroupAddon>
-            <!--            <InputGroupAddon align="inline-end">-->
-            <!--              <LoaderCircle class="animate-spin" />-->
-            <!--            </InputGroupAddon>-->
-          </InputGroup>
-        </div>
-        <div class="flex flex-col md:flex-row items-center">
-          <div class="flex items-center gap-2">
-            <Select multiple v-model="category">
-              <SelectTrigger>
-                <SelectValue placeholder="Categories"/>
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectLabel>Categories</SelectLabel>
-                  <SelectItem value="all">
-                    All
-                  </SelectItem>
-                  <SelectItem v-for="cat in categories" :key="cat" :value="cat">
-                    {{ cat }}
-                  </SelectItem>
-                </SelectGroup>
-              </SelectContent>
-            </Select>
+      <div class="w-full lg:max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div
+            class="bg-neutral-950 rounded-xl border border-neutral-700 shadow-xl relative overflow-hidden group flex flex-col">
 
-            <Select multiple v-model="tag">
-              <SelectTrigger>
-                <SelectValue placeholder="Tags"/>
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectLabel>Tags</SelectLabel>
-                  <SelectItem value="all">
-                    All
-                  </SelectItem>
-                  <SelectItem v-for="tag in tags" :key="tag" :value="tag">
-                    #{{ tag }}
-                  </SelectItem>
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-            <p class="pl-4 pr-2 hidden md:inline">Items Per Page</p>
-            <Select v-model="limit">
-              <SelectTrigger>
-                <SelectValue placeholder="Items Per Page"/>
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectLabel>Items Per Page</SelectLabel>
-                  <SelectItem :value="10">
-                    10
-                  </SelectItem>
-
-                  <SelectItem :value="25">
-                    25
-                  </SelectItem>
-
-                  <SelectItem :value="50">
-                    50
-                  </SelectItem>
-
-                  <SelectItem :value="100">
-                    100
-                  </SelectItem>
-                </SelectGroup>
-              </SelectContent>
-            </Select>
+          <div class="bg-neutral-800 px-4 py-2 flex items-center justify-between border-b border-neutral-700">
+            <div class="flex gap-2">
+              <div class="w-3 h-3 rounded-full bg-red-500"></div>
+              <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+              <div class="w-3 h-3 rounded-full bg-green-500"></div>
+            </div>
           </div>
-        </div>
-      </div>
-      <div class="flex-1">
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <NuxtLink :to="blog.link" v-for="blog in paginatedBlogs" :key="blog.title + '-' + blog.date"
-                    class="bg-neutral-950 rounded-xl border border-neutral-700 shadow-xl relative overflow-hidden group flex flex-col">
 
-            <div class="bg-neutral-800 px-4 py-2 flex items-center justify-between border-b border-neutral-700">
-              <div class="flex gap-2">
-                <div class="w-3 h-3 rounded-full bg-red-500"></div>
-                <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
-                <div class="w-3 h-3 rounded-full bg-green-500"></div>
-              </div>
+          <div class="p-6 flex-1 flex flex-col font-mono gap-20 w-full">
+            <div>
+              <p>Last login: {{ new Date().toLocaleString() }} on /dev/ttys001</p>
+              <p>Kernel: 6.2.17 - Distro: bdavies.net</p>
+              <p>bensh: Welcome to Ben Davies Portfolio Shell</p>
+              <p class="text-orange-500"> > Establishing Secure connection...</p>
+              <p class="text-orange-500"> > Booting Contact Section...</p>
+              <p class="text-primary inline-flex items-center gap-2">
+                <Lock :size="15"/>
+                Secure connection established, and contact section booted...
+              </p>
             </div>
 
-            <div class="p-6 flex-1 flex flex-col">
-              <div class="flex justify-between items-start mb-4">
-                <div
-                    class="w-12 h-12 bg-neutral-800/50 rounded-lg flex items-center justify-center text-2xl border border-neutral-700 text-nuxt">
-                  <component :is="getIcon(blog.category)"/>
-                </div>
-                <div
-                    class="px-2 py-1 bg-neutral-800 border border-neutral-700 text-neutral-400 text-[10px] rounded font-mono uppercase tracking-wider">
-                  <span class="">
-                    {{ blog.category }}
-                  </span>
-                </div>
-              </div>
-              <h3 class="text-xl font-bold text-white mb-2 font-sans">
-                {{ blog.title }}
-              </h3>
-              <p class="text-neutral-400 text-sm mb-6 flex-1 leading-relaxed">{{ blog.tagLine }}</p>
+            <div class="flex flex-col justify-center items-center w-full">
+              <h3 class="text-2xl md:text-3xl font-bold text-white font-sans mb-4 tracking-tight">Get in touch.</h3>
+              <p class="text-neutral-400 font-sans mb-8 leading-relaxed max-w-2xl text-center">
+                if there's anything you want to talk to me about
+              </p>
 
-              <div class="flex flex-wrap gap-2 mt-auto">
-              <span v-for="tag in blog.tags" :key="tag"
-                    class="text-xs font-mono text-primary bg-primary/10 border border-primary/20 px-2 py-1 rounded">
-                  #{{ tag }}
-              </span>
+              <div class="flex flex-col sm:flex-row gap-4">
+                <a href="mailto:portfolio@bdavies.net"
+                   class="flex items-center justify-center gap-3 px-6 py-3.5 bg-primary hover:bg-primary/80 text-white font-bold rounded-lg transition-colors font-sans">
+                  <MailIcon/>
+                  Email Me
+                </a>
+                <a href="https://github.com/bendavies99"
+                   class="flex items-center justify-center gap-3 px-6 py-3.5 bg-neutral-800 border border-neutral-700 hover:bg-neutral-700 text-white rounded-lg transition-colors font-sans">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor"
+                       viewBox="0 0 18 18">
+                    <path
+                        d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8"/>
+                  </svg>
+                  GitHub
+                </a>
               </div>
             </div>
-
-            <div
-                class="bg-neutral-800/40 px-6 py-4 border-t border-neutral-700 flex justify-between items-center mt-auto">
-              <div
-                  class="text-sm font-mono text-red-500 flex items-center gap-2 transition-colors">
-                <div class="w-2 h-2 rounded-full bg-red-500 animate-pulse block"></div>
-                <span>Live</span>
-              </div>
-            </div>
-          </NuxtLink>
-        </div>
-      </div>
-      <div class="flex flex-col md:flex-row gap-4 justify-between border-t border-neutral-800 py-6">
-        <p>Showing {{ offset + 1 }}-{{ (offset) + limit }} of {{ filteredBlogs.length }}</p>
-        <div class="flex gap-4 items-center">
-          <Pagination v-slot="{ page }" :items-per-page="limit" :total="filteredBlogs.length" v-model:page="page">
-            <PaginationContent v-slot="{ items }">
-              <PaginationPrevious/>
-
-              <template v-for="(item, index) in items" :key="index">
-                <PaginationItem
-                    v-if="item.type === 'page'"
-                    :value="item.value"
-                    :is-active="item.value === page"
-                >
-                  {{ item.value }}
-                </PaginationItem>
-              </template>
-
-              <PaginationEllipsis :index="4"/>
-
-              <PaginationNext/>
-            </PaginationContent>
-          </Pagination>
+          </div>
         </div>
       </div>
     </main>

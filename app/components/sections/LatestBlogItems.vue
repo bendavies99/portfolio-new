@@ -4,31 +4,13 @@ import HomepageSection from "../features/HomepageSection.vue";
 import {reactive} from "vue";
 import {Button} from "../ui/button";
 import { FileText, CircleChevronRight } from "lucide-vue-next";
-import {clickLink} from "../../lib/clickLink.ts";
+import {clickLink} from "../../lib/clickLink";
 
-const posts = reactive([
-  {
-    title: 'Reverse Proxying Proxmox with Traefik & Authentik',
-    date: '2023-10-24 14:32:01',
-    link: '/',
-    category: 'Homelab',
-    excerpt: 'Securing my homelab dashboard behind a zero-trust authentication layer using Traefik as the ingress and Authentik as the identity provider. No more exposed management ports.'
-  },
-  {
-    title: 'Migrating a Legacy Vue 2 Admin App to Nuxt 3',
-    date: '2023-09-12 09:15:44',
-    link: '/',
-    category: 'Development',
-    excerpt: 'Lessons learned moving a massive monolithic Vue 2 dashboard into the modern Nuxt 3 composition API era, dealing with state management changes from Vuex to Pinia.'
-  },
-  {
-    title: 'Why I still write Java in 2024',
-    date: '2023-08-05 18:45:11',
-    link: '/',
-    category: 'Opinion',
-    excerpt: 'Spring Boot 3 and virtual threads have completely revitalized the JVM ecosystem. Here is why I still choose it as my primary weapon of choice for robust backend services.'
-  }
-])
+const _blogs = useBlogArticles();
+
+const posts = computed(() => {
+  return _blogs.slice(0, 3);
+})
 
 </script>
 
@@ -51,8 +33,13 @@ const posts = reactive([
           <div class="w-full lg:w-[calc(50%-3.5rem)] p-6 rounded-xl bg-neutral-800 border border-neutral-700 hover:border-neutral-500 transition-colors">
             <div class="flex items-center gap-3 mb-3 font-mono text-xs">
               <span class="text-primary">[{{ post.date }}]</span>
-              <span class="px-2 py-0.5 rounded bg-neutral-900 text-neutral-300 border border-neutral-700">{{ post.category }}</span>
+              <div class="px-2 py-0.5 rounded bg-neutral-900 text-neutral-300 border border-neutral-700 flex items-center">
+                {{ post.category }}
+              </div>
             </div>
+            <ul class="flex gap-2 text-xs">
+              <li v-for="tag in post.tags" :key="tag" class="text-primary">#{{ tag }}</li>
+            </ul>
             <h3 class="text-xl font-bold text-white mb-2 group-hover:text-primary transition-colors cursor-pointer">
               {{ post.title }}
             </h3>

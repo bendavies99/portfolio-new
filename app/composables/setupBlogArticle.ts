@@ -7,7 +7,7 @@ type Day = `${0 | 1 | 2}${number}` | '30' | '31';
 export interface BlogArticleMeta {
     readonly title: string;
     readonly category: string;
-    readonly tagLine?: string;
+    readonly excerpt?: string;
     readonly date: `${Year}-${Month}-${Day}`;
     readonly tags: string[];
 }
@@ -18,13 +18,13 @@ export const setupBlogArticle = () => {
 
     useSeoMeta({
         title: article.title,
-        description: article.tagLine,
+        description: article.excerpt,
         ogTitle: article.title,
-        ogDescription: article.tagLine,
+        ogDescription: article.excerpt,
         ogImage: '/favicon.ico',
         ogUrl: '[og:url]',
         twitterTitle: article.title,
-        twitterDescription: article.tagLine,
+        twitterDescription: article.excerpt,
         twitterImage: '/favicon.ico',
         twitterCard: 'summary'
     });

@@ -1,6 +1,13 @@
 <script setup lang="ts">
 import NavBar from "./components/layout/NavBar.vue";
 import {useBlogArticles} from "./composables/useBlogArticles";
+import Footer from "./components/layout/Footer.vue";
+
+useHead({
+  titleTemplate: (titleChunk) => {
+    return titleChunk ? `${titleChunk} - Ben Davies Portfolio` : 'Ben Davies Portfolio'
+  },
+})
 
 </script>
 <template>
@@ -10,5 +17,6 @@ import {useBlogArticles} from "./composables/useBlogArticles";
     <NuxtLayout>
       <NuxtPage />
     </NuxtLayout>
+    <Footer />
   </div>
 </template>
